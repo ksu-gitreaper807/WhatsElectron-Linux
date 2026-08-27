@@ -337,3 +337,4 @@ Service apply to your use of the service itself.
 
 MIT. See [LICENSE](LICENSE) — including the note that it covers this wrapper only, not any brand
 assets.
+# WhatsElectron-Linux
