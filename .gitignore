@@ -9,3 +9,14 @@ coverage/
 *.AppImage
 *.snap
 .env
+
+# Runtime profile artifacts. The login session (cookies, localStorage,
+# IndexedDB) lives in <userData>/Partitions/whatsapp on the machine that ran
+# the app - never in this repository. These entries make sure a redirected
+# or copied-in profile can never be committed by accident.
+Partitions/
+Cache/
+GPUCache/
+window-state.json
+logs/*.jsonl
+notifications.jsonl

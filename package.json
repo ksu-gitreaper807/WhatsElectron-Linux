@@ -28,6 +28,7 @@
     "predev": "npm run ensure:electron",
     "dev": "npm run build && electron . --dev",
     "demo": "npm run build && electron . --dev --demo-notifications",
+    "reset": "node scripts/reset-profile.mjs",
     "smoke": "npm run ensure:electron && npm run build && node scripts/smoke.mjs",
     "dist:linux": "npm run build:prod && electron-builder --linux AppImage deb",
     "dist:dir": "npm run build:prod && electron-builder --linux --dir",
