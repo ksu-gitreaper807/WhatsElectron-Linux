@@ -1,0 +1,11 @@
+node_modules/
+out/
+release/
+coverage/
+*.log
+.tsbuildinfo
+.eslintcache
+.DS_Store
+*.AppImage
+*.snap
+.env

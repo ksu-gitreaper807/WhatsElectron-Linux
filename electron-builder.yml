@@ -1,0 +1,104 @@
+# electron-builder configuration. Linux is the target platform for this
+# application; macOS/Windows blocks exist only so `npm run dist` does not lie
+# about being able to build there.
+appId: com.whatsappdesktop.app
+productName: WhatsApp Desktop
+copyright: Copyright © 2026 WhatsApp Desktop contributors
+artifactName: ${productName}-${version}-${arch}.${ext}
+
+directories:
+  output: release
+  buildResources: build
+
+# Only the compiled output is shipped: no TypeScript sources, no tests, no
+# tooling. `node_modules` is added by electron-builder from `dependencies`
+# (+ installed optionalDependencies, i.e. dbus-next).
+files:
+  - out/**/*
+  - package.json
+  - "!**/*.map"
+  - "!**/*.test.js"
+
+asar: true
+# The main process is native ESM. Electron resolves ESM entry points inside
+# app.asar, but unpacking `out/` removes any doubt for every distro's packaged
+# layout, keeps source maps readable in a crash report, and costs nothing on a
+# desktop machine.
+asarUnpack:
+  - out/**/*
+
+compression: normal
+removePackageScripts: true
+
+linux:
+  # electron-builder names the desktop entry after `executableName`, so
+  # DESKTOP_FILE_NAME in src/shared/constants.ts must stay equal to it.
+  syncDesktopName: false
+  target:
+    - target: AppImage
+      arch: [x64, arm64]
+    - target: deb
+      arch: [x64, arm64]
+    - target: rpm
+      arch: [x64]
+    - target: tar.gz
+      arch: [x64]
+  executableName: whatsapp-desktop
+  # FreeDesktop entry overrides. Only these two are needed: `StartupWMClass` is
+  # what ties the notification, the tray item and the window (WM_CLASS is set to
+  # the same value in WindowManager) back to this launcher. No `MimeType` and no
+  # `Actions`: this app registers no protocol handler and never opens a window
+  # for a link.
+  desktop:
+    entry:
+      StartupWMClass: whatsapp-desktop
+      Keywords: whatsapp;messaging;tray;notifications;
+  synopsis: WhatsApp Desktop wrapper with tray, notifications and Do Not Disturb
+  description: |
+    An unofficial desktop wrapper around WhatsApp Web for Linux. It keeps you
+    logged in, lives in the system tray, forwards notifications to your desktop
+    notification daemon with per-chat grouping and Do Not Disturb, and provides a
+    global shortcut to show or hide the window. It does not implement, automate
+    or reverse engineer the WhatsApp protocol.
+  category: Network
+  icon: build/icons
+  maintainer: WhatsApp Desktop contributors <packaging@example.invalid>
+  # Note: Electron 44 implements the tray as a StatusNotifierItem client itself;
+  # libayatana-appindicator is *recommended* (some distro builds of Electron link
+  # it, and it improves menu rendering under some panels) but not required, and a
+  # missing optional package must never block installing the app.
+  # See docs/LINUX_INTEGRATION.md.
+
+deb:
+  priority: optional
+  depends:
+    - libgtk-3-0
+    - libnotify4
+    - libnss3
+    - libxss1
+    - libasound2
+    - libgbm1
+  recommends:
+    - libayatana-appindicator3-1
+
+rpm:
+  synopsis: WhatsApp Desktop wrapper with tray, notifications and Do Not Disturb
+  depends:
+    - gtk3
+    - libnotify
+    - nss
+    - alsa-lib
+
+appImage:
+  # No `--appimage-extract-and-run` needed: the app never re-extracts itself, and the
+  # autostart entry points at the AppImage path so an in-place update keeps the
+  # login item working.
+  artifactName: ${productName}-${version}-${arch}.AppImage
+
+win:
+  target: nsis
+nsis:
+  oneClick: false
+  perMachine: false
+mac:
+  target: dir

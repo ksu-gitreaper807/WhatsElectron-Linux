@@ -1,0 +1,58 @@
+{
+  "name": "whatsapp-desktop",
+  "productName": "WhatsApp Desktop",
+  "version": "1.0.0",
+  "description": "Secure Electron wrapper around WhatsApp Web with deep Linux desktop integration: tray, native notifications, grouping, Do Not Disturb, global shortcut, start on login.",
+  "main": "out/main/main.js",
+  "type": "module",
+  "license": "MIT",
+  "private": true,
+  "author": {
+    "name": "WhatsApp Desktop contributors"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "clean": "rm -rf out release coverage .eslintcache",
+    "ensure:electron": "node scripts/ensure-electron.mjs",
+    "build:main": "tsc -p tsconfig.json",
+    "build:web": "node scripts/build-preload.mjs",
+    "build:icons": "node scripts/build-icons.mjs",
+    "build": "npm run build:main && npm run build:web && npm run build:icons",
+    "build:prod": "npm run build:main && node scripts/build-preload.mjs --production && npm run build:icons",
+    "watch": "tsc -p tsconfig.json --watch",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.web.json && tsc -p tsconfig.test.json",
+    "prestart": "npm run ensure:electron",
+    "start": "npm run build && electron .",
+    "predev": "npm run ensure:electron",
+    "dev": "npm run build && electron . --dev",
+    "demo": "npm run build && electron . --dev --demo-notifications",
+    "smoke": "npm run ensure:electron && npm run build && node scripts/smoke.mjs",
+    "dist:linux": "npm run build:prod && electron-builder --linux AppImage deb",
+    "dist:dir": "npm run build:prod && electron-builder --linux --dir",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "optionalDependencies": {
+    "dbus-next": "^0.10.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.36.0",
+    "@types/node": "^24.0.0",
+    "electron": "44.0.0",
+    "electron-builder": "26.15.3",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.9.1",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.9.6",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.68.0",
+    "vitest": "4.1.11"
+  }
+}

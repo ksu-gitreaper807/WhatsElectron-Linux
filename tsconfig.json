@@ -1,0 +1,12 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "rootDir": "src",
+    "outDir": "out",
+    "incremental": false
+  },
+  "include": ["src/main/**/*.ts", "src/shared/**/*.ts", "src/tools/**/*.ts"],
+  "exclude": ["node_modules", "out", "release", "test", "src/preload", "src/renderer"]
+}

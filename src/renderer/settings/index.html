@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      A local, offline UI with no remote content. The policy below is the actual
+      behaviour of this screen, written down so that any future deviation fails
+      loudly (and so that a reviewer can check it in one line).
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; form-action 'none'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark light" />
+    <title>WhatsApp Desktop - Settings</title>
+    <link rel="stylesheet" href="./settings.css" />
+  </head>
+  <body>
+    <div id="app" role="main">
+      <noscript>
+        <p>JavaScript is required for this window. Enable it in the app menu, or edit <code>settings.json</code> directly.</p>
+      </noscript>
+    </div>
+    <script src="./settings.js"></script>
+  </body>
+</html>
